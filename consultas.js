@@ -10,6 +10,7 @@ const pool = new Pool({
     database: process.env.PG_DB,
     password: process.env.PG_PASSWORD,
     allowExitOnIdle: true,
+    ssl: process.env.PG_SSL === "true" && { rejectUnauthorized: process.env.PG_SSL_REJECT_UNAUTHORIZED !== "false" }
 });
 
 
