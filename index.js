@@ -59,6 +59,7 @@ app.post('/api/v1/sell_books', async (req, res) => {
 
 app.get('/api/v1/books', async (req, res) => {
     try {
+        res.setHeader('Content-Type', 'application/json; charset=utf-8')
         book = await Libros()
         res.json(book)
     } catch (error) {
@@ -68,6 +69,7 @@ app.get('/api/v1/books', async (req, res) => {
 
 app.get('/api/v1/books/:id', async (req, res) => {
     try {
+        res.setHeader('Content-Type', 'application/json; charset=utf-8')
         const { id } = req.params
         book = await consultarLibro(id)
         res.json(book)
@@ -78,6 +80,7 @@ app.get('/api/v1/books/:id', async (req, res) => {
 
 app.get('/api/v1/users', async (req, res) => {
     try {
+        res.setHeader('Content-Type', 'application/json; charset=utf-8')
         user = await consultarUsuario()
         res.json(user)
     } catch (error) {
