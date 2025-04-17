@@ -19,6 +19,7 @@ app.post('/api/v1/auth/register', async (req, res) => {
     try {
         const reguser = req.body
         await registrarUsuario(reguser)
+        res.setHeader('Content-Type', 'application/json; charset=utf-8')
         res.send("Usuario registrado")
     } catch (error) {
         res.status(400).json({ error: 'Error al registrar usuario' })
@@ -29,7 +30,8 @@ app.post('/api/v1/auth/login', async (req, res) => {
     try {
         const { username, password } = req.body
         await verificarCredenciales(username, password)
-        const token = jwt.sign({ username }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        const token = jwt.sign({ username }, process.env.JWT_SECRET, { expiresIn: '1h' })
+        res.setHeader('Content-Type', 'application/json; charset=utf-8')
         res.json({ token, username })
     } catch (error) {
         res.status(401).json({ error: 'Credenciales inválidas' })
@@ -40,6 +42,7 @@ app.get('/api/v1/auth/me', authMiddleware, async (req, res) => {
     try {
         const { username } = req.user
         const user = await consultaUsuario(username)
+        res.setHeader('Content-Type', 'application/json; charset=utf-8')
         res.json(user)
     } catch (error) {
         res.status(401).json({ error })
@@ -51,6 +54,7 @@ app.post('/api/v1/sell_books', async (req, res) => {
     try {
         const book = req.body
         await venderLibro(book)
+        res.setHeader('Content-Type', 'application/json; charset=utf-8')
         res.status(200).json({ message: "Libro publicado correctamente" })
     } catch (error) {
         res.status(400).json({ error: error.message })
@@ -59,8 +63,8 @@ app.post('/api/v1/sell_books', async (req, res) => {
 
 app.get('/api/v1/books', async (req, res) => {
     try {
-        res.setHeader('Content-Type', 'application/json; charset=utf-8')
         book = await Libros()
+        res.setHeader('Content-Type', 'application/json; charset=utf-8')
         res.json(book)
     } catch (error) {
         res.status(401).json({ error })
@@ -69,9 +73,9 @@ app.get('/api/v1/books', async (req, res) => {
 
 app.get('/api/v1/books/:id', async (req, res) => {
     try {
-        res.setHeader('Content-Type', 'application/json; charset=utf-8')
         const { id } = req.params
         book = await consultarLibro(id)
+        res.setHeader('Content-Type', 'application/json; charset=utf-8')
         res.json(book)
     } catch (error) {
         res.status(401).json({ error })
@@ -80,8 +84,8 @@ app.get('/api/v1/books/:id', async (req, res) => {
 
 app.get('/api/v1/users', async (req, res) => {
     try {
-        res.setHeader('Content-Type', 'application/json; charset=utf-8')
         user = await consultarUsuario()
+        res.setHeader('Content-Type', 'application/json; charset=utf-8')
         res.json(user)
     } catch (error) {
         res.status(401).json({ error })
@@ -92,6 +96,7 @@ app.post('/api/v1/checkout', async (req, res) => {
     try {
         const { id } = req.body
         await checkout(id)
+        res.setHeader('Content-Type', 'application/json; charset=utf-8')
         res.status(200).json({ message: "Pago realizado correctamente" })
     } catch (error) {
         res.status(400).json({ error: error.message })
