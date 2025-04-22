@@ -10,6 +10,11 @@ const cors = require('cors')
 app.use(express.json())
 app.use(cors())
 
+app.use((req, res, next) => {
+    res.setHeader('Content-Type', 'application/json; charset=UTF-8');
+    next();
+});
+
 app.listen(3000, () => {
     console.log('http://localhost:3000/api/v1/books');
 });
