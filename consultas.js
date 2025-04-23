@@ -102,6 +102,20 @@ const consultarUsuario = async () => {
         throw { code: 404, message: "No hay usuarios en la base de datos" }
     }
 }
-    
 
-module.exports = { verificarCredenciales, registrarUsuario, consultaUsuario, venderLibro, Libros, consultarLibro, consultarUsuario }
+const checkout = async (book) => {
+    try {
+      const consulta = format(
+        "INSERT INTO checkout (user_id, libro) VALUES (%L, %L)",
+        book.userId,
+        JSON.stringify(book.libro) // Muy importante: convertir a JSON string
+      );
+  
+      await pool.query(consulta);
+    } catch (error) {
+      console.log("Error al insertar en DB:", error);
+      throw { code: 400, message: "Error al realizar el pago" };
+    }
+  }
+
+module.exports = { verificarCredenciales, registrarUsuario, consultaUsuario, venderLibro, Libros, consultarLibro, consultarUsuario, checkout }

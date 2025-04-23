@@ -1,7 +1,7 @@
 require('dotenv').config()
 const express = require('express')
 const jwt = require('jsonwebtoken')
-const { verificarCredenciales, registrarUsuario, consultaUsuario, venderLibro, Libros, consultarLibro, consultarUsuario } = require('./consultas')
+const { verificarCredenciales, registrarUsuario, consultaUsuario, venderLibro, Libros, consultarLibro, consultarUsuario, checkout } = require('./consultas')
 const authMiddleware = require('./middleware/authMiddleware')
 
 const app = express();
@@ -90,12 +90,17 @@ app.get('/api/v1/users', async (req, res) => {
     }
 })
 
-app.post('/api/v1/checkout', async (req, res) => {
+app.post('/api/v1/checkout', authMiddleware, async (req, res) => {
     try {
-        const { id } = req.body
-        await checkout(id)
-        res.status(200).json({ message: "Pago realizado correctamente" })
+        // Usar req.body para acceder a los datos enviados en el cuerpo de la solicitud
+        const { userId, libro } = req.body;
+
+        // Llamar a tu función para guardar el pago
+        await checkout(userId, libro);
+
+        res.status(200).json({ message: "Pago realizado correctamente" });
     } catch (error) {
-        res.status(400).json({ error: error.message })
+        console.error("Error al procesar el pago:", error);
+        res.status(400).json({ error: error.message });
     }
 })
