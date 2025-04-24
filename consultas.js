@@ -59,9 +59,9 @@ const consultaUsuario = async (username) => {
 const venderLibro = async (book) => {
 
     try {
-        const { name, author, category, img, price, description, vendedor } = book
-        const values = [name, author, category, img, price, description, vendedor]
-        const consulta = format("INSERT INTO books (name, author, category, img, price, description, vendedor) VALUES (%L)", values)
+        const { name, author, category, img, price, description, stock, vendidos } = book
+        const values = [name, author, category, img, price, description, stock, vendidos]
+        const consulta = format("INSERT INTO books (name, author, category, img, price, description, stock, vendidos) VALUES (%L)", values)
         await pool.query(consulta)
     } catch (error) {
         console.log(error)
